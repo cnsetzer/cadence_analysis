@@ -14,7 +14,7 @@ def process_detections(path, directory):
         file3_exist = os.path.isfile(path + directory + '/scolnic_like_detections.csv')
         if file1_exist and file2_exist and file3_exist:
             print('{} is done reprocessing for detections.'.format(directory))
-            continue
+            return
         else:
             parameters = pd.read_csv(path + directory + '/modified_parameters.csv', index_col=0)
             single_observations = pd.read_csv(path + directory + '/observations.csv', index_col=0)
