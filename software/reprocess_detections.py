@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import multiprocessing as mp
+from itertools import repeat
 from astrotog.functions import scolnic_detections as scd
 from astrotog.functions import scolnic_like_detections as scld
 
