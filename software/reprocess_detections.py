@@ -44,7 +44,7 @@ if __name__ == '__main__':
     sim_results_paths = []
     # sim_results_paths.append('/Users/cnsetzer/Documents/LSST/astrotog_output/rosswog_results/binomial_runs/')
     # sim_results_paths.append('/Users/cnsetzer/Documents/LSST/astrotog_output/scolnic_results/')
-    sim_results_paths.append('share/data1/csetzer/lsst_kne_sims_outputs/')
+    sim_results_paths.append('/share/data1/csetzer/lsst_kne_sims_outputs/')
 
     for path in sim_results_paths:
         output_dirs = os.listdir(path)
