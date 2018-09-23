@@ -24,4 +24,4 @@ echo PBS_NODEFILE=$PBS_NODEFILE
 
 export PYTHONPATH=$PYTHONPATH:/home/csetzer/.conda/envs/astrotog_hpc/bin/python
 
-python /home/csetzer/software/cadence_analysis/reprocess_detections.py
+python /home/csetzer/software/cadence_analysis/software/reprocess_detections.py
