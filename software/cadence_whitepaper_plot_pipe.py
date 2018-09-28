@@ -611,10 +611,14 @@ if __name__ == "__main__":
 
     sim_results_path = []
 
-    output_path = '/Users/cnsetzer/Documents/LSST/cadence_analysis/whitepaper_writeup/figures/'
-    prop_path = '/Users/cnsetzer/Documents/LSST/cadence_analysis/cadence_analysis/cadence_data/'
-    sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/rosswog_results/binomial_runs/')
-    sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/scolnic_results/')
+    # output_path = '/Users/cnsetzer/Documents/LSST/cadence_analysis/whitepaper_writeup/figures/'
+    # prop_path = '/Users/cnsetzer/Documents/LSST/cadence_analysis/cadence_analysis/cadence_data/'
+    # sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/rosswog_results/binomial_runs/')
+    # sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/scolnic_results/')
+
+    output_path = '/home/csetzer/LSST/whitepaper/figures/'
+    prop_path = '/home/csetzer/software/cadence_analysis/cadence_data/'
+    sim_results_path.append('/share/data1/csetzer/lsst_kne_sims_outputs/')
 
     # Get the properties for the different cadence partitions
     ddf_props = pd.read_csv(prop_path + 'ddf_properties.csv', index_col=0)
