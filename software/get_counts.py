@@ -107,14 +107,6 @@ print(list(zip(rw_var_sorted_cadences, rw_var_sorted_cadence_numbers)))
 print(list(zip(sc_min_var_sorted_cadences, sc_min_var_sorted_cadence_numbers)))
 
 
-
-
-
-
-
-
-
-
 fig = plt.figure()
 plt.scatter(sc_sorted_cadences, sc_sorted_cadence_numbers)
 plt.ylim([50, 100])
