@@ -736,10 +736,10 @@ if __name__ == "__main__":
             num_trans_pprocess3 = np.ceil(num_detected3/size)
             num_trans_pprocess4 = np.ceil(num_detected4/size)
 
-            receive_array1 = np.empty((num_trans_pprocess1, 1))
-            receive_array2 = np.empty((num_trans_pprocess2, 1))
-            receive_array3 = np.empty((num_trans_pprocess3, 1))
-            receive_array4 = np.empty((num_trans_pprocess4, 1))
+            receive_array1 = np.empty((int(num_trans_pprocess1), 1))
+            receive_array2 = np.empty((int(num_trans_pprocess2), 1))
+            receive_array3 = np.empty((int(num_trans_pprocess3), 1))
+            receive_array4 = np.empty((int(num_trans_pprocess4), 1))
 
             comm.barrier()
             comm.Scatter([id_list1, num_trans_pprocess1, MPI.DOUBLE],
