@@ -3,7 +3,7 @@
 #PBS -V
 #PBS -N cadence_delta_n
 #PBS -q compute
-#PBS -l nodes=1:ppn=1,walltime=99:00:00
+#PBS -l nodes=1,walltime=99:00:00
 #PBS -r n
 #PBS -k oe
 module purge
@@ -25,4 +25,4 @@ echo PBS_NODEFILE=$PBS_NODEFILE
 
 export PYTHONPATH=$PYTHONPATH:/home/csetzer/.conda/envs/astrotog_hpc/bin/python
 
-python cadence_whitepaper_plot_pipe.py
+mpirun  -genvlist PATH,LD_LIBRARY_PATH,LD_RUN_PATH,PYTHONPATH --machinefile $PBS_NODEFILE python cadence_whitepaper_plot_pipe.py
