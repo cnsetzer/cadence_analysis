@@ -727,10 +727,10 @@ if __name__ == "__main__":
             num_detected4 = len(detections4['transient_id'].unique())
 
             if rank == 0:
-                id_list1 = detections1['transient_id'].unique()
-                id_list2 = detections2['transient_id'].unique()
-                id_list3 = detections3['transient_id'].unique()
-                id_list4 = detections4['transient_id'].unique()
+                id_list1 = detections1['transient_id'].unique().astype('i')
+                id_list2 = detections2['transient_id'].unique().astype('i')
+                id_list3 = detections3['transient_id'].unique().astype('i')
+                id_list4 = detections4['transient_id'].unique().astype('i')
             else:
                 id_list1 = None
                 id_list2 = None
@@ -742,20 +742,16 @@ if __name__ == "__main__":
             num_trans_pprocess3 = int(np.ceil(num_detected3/size))
             num_trans_pprocess4 = int(np.ceil(num_detected4/size))
 
-            receive_array1 = np.empty((num_trans_pprocess1, 1))
-            receive_array2 = np.empty((num_trans_pprocess2, 1))
-            receive_array3 = np.empty((num_trans_pprocess3, 1))
-            receive_array4 = np.empty((num_trans_pprocess4, 1))
+            receive_array1 = np.empty(num_trans_pprocess1, dtype='i')
+            receive_array2 = np.empty(num_trans_pprocess2, dtype='i')
+            receive_array3 = np.empty(num_trans_pprocess3, dtype='i')
+            receive_array4 = np.empty(num_trans_pprocess4, dtype='i')
 
             comm.barrier()
-            comm.Scatter([id_list1, num_trans_pprocess1, MPI.DOUBLE],
-                     [receive_array1, num_trans_pprocess1, MPI.DOUBLE], root=0)
-            comm.Scatter([id_list2, num_trans_pprocess2, MPI.DOUBLE],
-                     [receive_array2, num_trans_pprocess2, MPI.DOUBLE], root=0)
-            comm.Scatter([id_list3, num_trans_pprocess3, MPI.DOUBLE],
-                     [receive_array3, num_trans_pprocess3, MPI.DOUBLE], root=0)
-            comm.Scatter([id_list4, num_trans_pprocess4, MPI.DOUBLE],
-                     [receive_array4, num_trans_pprocess4, MPI.DOUBLE], root=0)
+            comm.Scatter(id_list1, receive_array1, root=0)
+            comm.Scatter(id_list2, receive_array2, root=0)
+            comm.Scatter(id_list3, receive_array3, root=0)
+            comm.Scatter(id_list4, receive_array4, root=0)
 
             # Trim the nonsense from the process arrays
             id_del1 = []
