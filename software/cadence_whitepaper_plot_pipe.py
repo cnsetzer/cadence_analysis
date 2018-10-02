@@ -748,10 +748,14 @@ if __name__ == "__main__":
             receive_array4 = np.empty(num_trans_pprocess4, dtype='i')
 
             comm.barrier()
-            comm.Scatter(id_list1, receive_array1, root=0)
-            comm.Scatter(id_list2, receive_array2, root=0)
-            comm.Scatter(id_list3, receive_array3, root=0)
-            comm.Scatter(id_list4, receive_array4, root=0)
+            comm.Scatter([id_list1, num_trans_pprocess1, MPI.INT],
+                     [receive_array1, num_trans_pprocess1, MPI.INT], root=0)
+            comm.Scatter([id_list2, num_trans_pprocess2, MPI.INT],
+                     [receive_array2, num_trans_pprocess2, MPI.INT], root=0)
+            comm.Scatter([id_list3, num_trans_pprocess3, MPI.INT],
+                     [receive_array3, num_trans_pprocess3, MPI.INT], root=0)
+            comm.Scatter([id_list4, num_trans_pprocess4, MPI.INT],
+                     [receive_array4, num_trans_pprocess4, MPI.INT], root=0)
 
             # Trim the nonsense from the process arrays
             id_del1 = []
