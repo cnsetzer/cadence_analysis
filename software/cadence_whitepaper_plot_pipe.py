@@ -727,10 +727,10 @@ if __name__ == "__main__":
             num_detected4 = len(detections4['transient_id'].unique())
 
             if rank == 0:
-                id_list1 = detections1['transient_id'].unique().values
-                id_list2 = detections2['transient_id'].unique().values
-                id_list3 = detections3['transient_id'].unique().values
-                id_list4 = detections4['transient_id'].unique().values
+                id_list1 = detections1['transient_id'].unique()
+                id_list2 = detections2['transient_id'].unique()
+                id_list3 = detections3['transient_id'].unique()
+                id_list4 = detections4['transient_id'].unique()
             else:
                 id_list1 = None
                 id_list2 = None
