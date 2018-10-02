@@ -731,6 +731,12 @@ if __name__ == "__main__":
                 id_list2 = np.asarray(list(detections2['transient_id'].unique()))
                 id_list3 = np.asarray(list(detections3['transient_id'].unique()))
                 id_list4 = np.asarray(list(detections4['transient_id'].unique()))
+            else:
+                id_list1 = None
+                id_list2 = None
+                id_list3 = None
+                id_list4 = None
+
             num_trans_pprocess1 = np.ceil(num_detected1/size)
             num_trans_pprocess2 = np.ceil(num_detected2/size)
             num_trans_pprocess3 = np.ceil(num_detected3/size)
