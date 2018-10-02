@@ -727,10 +727,10 @@ if __name__ == "__main__":
             num_detected4 = len(detections4['transient_id'].unique())
 
             if rank == 0:
-                id_list1 = np.asarray(list(detections1['transient_id'].unique()))
-                id_list2 = np.asarray(list(detections2['transient_id'].unique()))
-                id_list3 = np.asarray(list(detections3['transient_id'].unique()))
-                id_list4 = np.asarray(list(detections4['transient_id'].unique()))
+                id_list1 = detections1['transient_id'].unique().values
+                id_list2 = detections2['transient_id'].unique().values
+                id_list3 = detections3['transient_id'].unique().values
+                id_list4 = detections4['transient_id'].unique().values
             else:
                 id_list1 = None
                 id_list2 = None
@@ -793,10 +793,15 @@ if __name__ == "__main__":
             detections_pp_3 = detections3[detections3['transient_id'].isin(id_list_pprocess3)]
             detections_pp_4 = detections4[detections4['transient_id'].isin(id_list_pprocess4)]
 
-            df_pp1 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_1, like=False)
-            df_pp2 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_2, like=False)
-            df_pp3 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_3, like=True)
-            df_pp4 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_4, like=True)
+            num_pp1 = len(detections_pp_1['transient_id'].unique())
+            num_pp2 = len(detections_pp_2['transient_id'].unique())
+            num_pp3 = len(detections_pp_3['transient_id'].unique())
+            num_pp4 = len(detections_pp_4['transient_id'].unique())
+
+            df_pp1 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_1, num_pp1, like=False)
+            df_pp2 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_2, num_pp2, like=False)
+            df_pp3 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_3, num_pp3, like=True)
+            df_pp4 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_4, num_pp4, like=True)
 
             if size > 1:
                 df1_receive = comm.allgather(df_pp1)
