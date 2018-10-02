@@ -705,10 +705,10 @@ if __name__ == "__main__":
     # print('Done with redshift distribution plots.')
 
 
-    df1 = pd.DataFrame(columns=columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
-    df2 = pd.DataFrame(columns=columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
-    df3 = pd.DataFrame(columns=columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
-    df4 = pd.DataFrame(columns=columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
+    df1 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
+    df2 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
+    df3 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
+    df4 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
 
     for cadence in results.keys():
         if rank == 0:
