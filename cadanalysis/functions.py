@@ -4,18 +4,9 @@ import numpy as np
 import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
-from copy import copy, deepcopy
-from mpi4py import MPI
-import multiprocessing as mp
 from astrotog.functions import scolnic_detections as scd
 from astrotog.functions import scolnic_like_detections as scld
-# matplotlib.use('Agg')
 import seaborn as sns
-# I personally like this style.
-sns.set_style('whitegrid')
-# Easy to change context from `talk`, `notebook`, `poster`, `paper`.
-sns.set_context('paper')
-pd.set_option('display.max_columns', 500)
 
 
 def determine_ddf_detections(ddf_properties, cadence_results):
@@ -342,11 +333,17 @@ def overlay_redshift_distribution(param_df1, param_df2):
     plt.hist(x=[wfd_detect_zs1, ddf_detect_zs1], bins=n_bins, range=(z_min, z_max), histtype='stepfilled', alpha=0.4, label='DES-GW - Detected', stacked=True)
     plt.hist(x=[wfd_detect_zs2, ddf_detect_zs2], bins=n_bins, range=(z_min, z_max), histtype='stepfilled', alpha=0.25, label='SAEE - Detected', stacked=True, color=['k','y'])
     # plt.tick_params(which='both', length=10, width=1.5)
+    plt.axvline(x=0.102, linestyle='--', color='k')
+    plt.text(0.11, 500, 'LIGO A+ Sensitivity', rotation=90, fontsize=int(13))
+    plt.axvline(x=0.204, linestyle='-.', color='k')
+    plt.text(0.21, 500, 'LIGO Voyager Sensitivity', rotation=90, fontsize=int(13))
+    plt.axvline(x=0.5, linestyle='-', color='k')
+    plt.text(0.507, 1100, 'Einstein Telescope Sensitivity', rotation=90, fontsize=int(13))
     plt.yscale('log')
     plt.legend(loc=2, fontsize=int(13))
-    plt.xlabel('z', fontsize=int(13))
-    plt.ylabel(r'$N(z)$', fontsize=int(13))
-    plt.title('({0:.3f} bins, {1}/{2} Detections)'.format(bin_size,len(detect_zs1), len(detect_zs2)), fontsize=int(13))
+    plt.xlabel('z', fontsize=int(14))
+    plt.ylabel(r'$N(z)$', fontsize=int(14))
+    plt.title('({0:.3f} bins, {1}/{2} Detections)'.format(bin_size,len(detect_zs1), len(detect_zs2)), fontsize=int(14))
     return N_z_dist_fig
 
 ################################################################################
@@ -501,15 +498,15 @@ def simple_sorted_cadence_plots(results, output_path):
         rw_raw_cadence_numbers_ddf.sort()
         rw_sorted_cadence_numbers_ddf = rw_raw_cadence_numbers_ddf
 
-    # fig = plt.figure()
-    # plt.errorbar(sc_sorted_cadences_total, sc_sorted_cadence_numbers_total, yerr=np.sqrt(sc_sorted_cadence_numbers_total), fmt='o', capsize=6)
-    # plt.axhline(fiducial_scolnic_total, color='r')
-    # plt.xticks(rotation='vertical')
-    # plt.title('Detections vs. Cadence (DES-GW model)')
-    # plt.ylabel('Number of Detections')
-    # plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'])
-    # plt.savefig(output_path + 'Sorted_total_scolnic_counts_by_cadence.pdf', bbox_inches='tight')
-    # plt.close(fig)
+    fig = plt.figure()
+    plt.errorbar(sc_sorted_cadences_total, sc_sorted_cadence_numbers_total, yerr=np.sqrt(sc_sorted_cadence_numbers_total), fmt='o', capsize=6)
+    plt.axhline(fiducial_scolnic_total, color='r')
+    plt.xticks(rotation='vertical')
+    plt.title('Detections vs. Cadence (DES-GW model)')
+    plt.ylabel('Number of Detections')
+    plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'])
+    plt.savefig(output_path + 'Sorted_total_scolnic_counts_by_cadence.pdf', bbox_inches='tight')
+    plt.close(fig)
 
 
     fig = plt.figure()
@@ -523,15 +520,15 @@ def simple_sorted_cadence_plots(results, output_path):
     plt.close(fig)
 
 
-    # fig = plt.figure()
-    # plt.errorbar(rw_sorted_cadences_total, rw_sorted_cadence_numbers_total, yerr=np.sqrt(rw_sorted_cadence_numbers_total), fmt='o', capsize=6)
-    # plt.axhline(fiducial_scolnic_total, color='r')
-    # plt.xticks(rotation='vertical')
-    # plt.title('Detections vs. Cadence (Rosswog model)')
-    # plt.ylabel('Number of Detections')
-    # plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'], loc=4)
-    # plt.savefig(output_path + 'Sorted_total_rosswog_counts_by_cadence.pdf', bbox_inches='tight')
-    # plt.close(fig)
+    fig = plt.figure()
+    plt.errorbar(rw_sorted_cadences_total, rw_sorted_cadence_numbers_total, yerr=np.sqrt(rw_sorted_cadence_numbers_total), fmt='o', capsize=6)
+    plt.axhline(fiducial_scolnic_total, color='r')
+    plt.xticks(rotation='vertical')
+    plt.title('Detections vs. Cadence (Rosswog model)')
+    plt.ylabel('Number of Detections')
+    plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'], loc=4)
+    plt.savefig(output_path + 'Sorted_total_rosswog_counts_by_cadence.pdf', bbox_inches='tight')
+    plt.close(fig)
 
     fig = plt.figure()
     plt.errorbar(sc_sorted_cadences_wfd, sc_sorted_cadence_numbers_wfd, yerr=np.sqrt(sc_sorted_cadence_numbers_wfd), fmt='o', capsize=6, color='b')
@@ -553,272 +550,78 @@ def simple_sorted_cadence_plots(results, output_path):
     plt.savefig(output_path + 'ddf_detection_counts_by_cadence.pdf', bbox_inches='tight')
     plt.close(fig)
 
-    # fig = plt.figure()
-    # plt.errorbar(sc_sorted_cadences_wfd, sc_sorted_cadence_numbers_wfd, yerr=np.sqrt(sc_sorted_cadence_numbers_wfd), fmt='o', capsize=6)
-    # plt.axhline(fiducial_scolnic_wfd, color='r')
-    # plt.xticks(rotation='vertical')
-    # plt.title('Detections vs. Cadence WFD (DES-GW model)')
-    # plt.ylabel('Number of Detections')
-    # plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'])
-    # plt.savefig(output_path + 'Sorted_wfd_scolnic_counts_by_cadence.pdf', bbox_inches='tight')
-    # plt.close(fig)
+    fig = plt.figure()
+    plt.errorbar(sc_sorted_cadences_wfd, sc_sorted_cadence_numbers_wfd, yerr=np.sqrt(sc_sorted_cadence_numbers_wfd), fmt='o', capsize=6)
+    plt.axhline(fiducial_scolnic_wfd, color='r')
+    plt.xticks(rotation='vertical')
+    plt.title('Detections vs. Cadence WFD (DES-GW model)')
+    plt.ylabel('Number of Detections')
+    plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'])
+    plt.savefig(output_path + 'Sorted_wfd_scolnic_counts_by_cadence.pdf', bbox_inches='tight')
+    plt.close(fig)
 
-    # fig = plt.figure()
-    # plt.errorbar(rw_sorted_cadences_wfd, rw_sorted_cadence_numbers_wfd, yerr=np.sqrt(rw_sorted_cadence_numbers_wfd), fmt='o', capsize=6)
-    # plt.axhline(fiducial_scolnic_wfd, color='r')
-    # plt.xticks(rotation='vertical')
-    # plt.title('Detections vs. Cadence WFD (Rosswog model)')
-    # plt.ylabel('Number of Detections')
-    # plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'], loc=4)
-    # plt.savefig(output_path + 'Sorted_wfd_rosswog_counts_by_cadence.pdf', bbox_inches='tight')
-    # plt.close(fig)
+    fig = plt.figure()
+    plt.errorbar(rw_sorted_cadences_wfd, rw_sorted_cadence_numbers_wfd, yerr=np.sqrt(rw_sorted_cadence_numbers_wfd), fmt='o', capsize=6)
+    plt.axhline(fiducial_scolnic_wfd, color='r')
+    plt.xticks(rotation='vertical')
+    plt.title('Detections vs. Cadence WFD (Rosswog model)')
+    plt.ylabel('Number of Detections')
+    plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'], loc=4)
+    plt.savefig(output_path + 'Sorted_wfd_rosswog_counts_by_cadence.pdf', bbox_inches='tight')
+    plt.close(fig)
 
-    # fig = plt.figure()
-    # plt.errorbar(sc_sorted_cadences_ddf, sc_sorted_cadence_numbers_ddf, yerr=np.sqrt(sc_sorted_cadence_numbers_ddf), fmt='o', capsize=6)
-    # plt.axhline(fiducial_scolnic_ddf, color='r')
-    # plt.xticks(rotation='vertical')
-    # plt.title('Detections vs. Cadence DDF (DES-GW model)')
-    # plt.ylabel('Number of Detections')
-    # plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'])
-    # plt.savefig(output_path + 'Sorted_ddf_scolnic_counts_by_cadence.pdf', bbox_inches='tight')
-    # plt.close(fig)
-    #
-    # fig = plt.figure()
-    # plt.errorbar(rw_sorted_cadences_ddf, rw_sorted_cadence_numbers_ddf, yerr=np.sqrt(rw_sorted_cadence_numbers_ddf), fmt='o', capsize=6)
-    # plt.axhline(fiducial_scolnic_ddf, color='r')
-    # plt.xticks(rotation='vertical')
-    # plt.title('Detections vs. Cadence DDF(Rosswog model)')
-    # plt.ylabel('Number of Detections')
-    # plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'], loc=4)
-    # plt.savefig(output_path + 'Sorted_ddf_rosswog_counts_by_cadence.pdf', bbox_inches='tight')
-    # plt.close(fig)
+    fig = plt.figure()
+    plt.errorbar(sc_sorted_cadences_ddf, sc_sorted_cadence_numbers_ddf, yerr=np.sqrt(sc_sorted_cadence_numbers_ddf), fmt='o', capsize=6)
+    plt.axhline(fiducial_scolnic_ddf, color='r')
+    plt.xticks(rotation='vertical')
+    plt.title('Detections vs. Cadence DDF (DES-GW model)')
+    plt.ylabel('Number of Detections')
+    plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'])
+    plt.savefig(output_path + 'Sorted_ddf_scolnic_counts_by_cadence.pdf', bbox_inches='tight')
+    plt.close(fig)
 
-    #
-    # fig = plt.figure()
-    # plt.errorbar(rw_sorted_cadences_wfd, rw_sorted_cadence_numbers_wfd, yerr=np.sqrt(rw_sorted_cadence_numbers_wfd), fmt='o', capsize=6)
-    # plt.errorbar(rw_sorted_cadences_ddf, rw_sorted_cadence_numbers_ddf, yerr=np.sqrt(rw_sorted_cadence_numbers_ddf), fmt='o', capsize=6)
-    # plt.axhline(fiducial_scolnic_ddf, color='r')
-    # plt.axhline(fiducial_scolnic_wfd, color='r')
-    # plt.xticks(rotation='vertical')
-    # plt.title('Detections vs. Cadence (Rosswog model)')
-    # plt.ylabel('Number of Detections')
-    # plt.legend(['DDF Value from Scolnic et. al 2017', 'WFD Value from Scolnic et. al 2017', 'WFD', 'DDF'], loc=4)
-    # plt.savefig(output_path + 'split_rosswog_counts_by_cadence.pdf', bbox_inches='tight')
-    # plt.close(fig)
-    #
-    #
-    # fig = plt.figure()
-    # plt.errorbar(sc_sorted_cadences_wfd, sc_sorted_cadence_numbers_wfd, yerr=np.sqrt(sc_sorted_cadence_numbers_wfd), fmt='o', capsize=6)
-    # plt.errorbar(sc_sorted_cadences_ddf, sc_sorted_cadence_numbers_ddf, yerr=np.sqrt(sc_sorted_cadence_numbers_ddf), fmt='o', capsize=6)
-    # plt.axhline(fiducial_scolnic_ddf, color='r')
-    # plt.axhline(fiducial_scolnic_wfd, color='r')
-    # plt.xticks(rotation='vertical')
-    # plt.title('Detections vs. Cadence (DES-GW model)')
-    # plt.ylabel('Number of Detections')
-    # plt.legend(['DDF Value from Scolnic et. al 2017', 'WFD Value from Scolnic et. al 2017', 'WFD', 'DDF'], loc=4)
-    # plt.savefig(output_path + 'split_desgw_counts_by_cadence.pdf', bbox_inches='tight')
-    # plt.close(fig)
+    fig = plt.figure()
+    plt.errorbar(rw_sorted_cadences_ddf, rw_sorted_cadence_numbers_ddf, yerr=np.sqrt(rw_sorted_cadence_numbers_ddf), fmt='o', capsize=6)
+    plt.axhline(fiducial_scolnic_ddf, color='r')
+    plt.xticks(rotation='vertical')
+    plt.title('Detections vs. Cadence DDF(Rosswog model)')
+    plt.ylabel('Number of Detections')
+    plt.legend(['Value from Scolnic et. al 2017', 'Number Detected per Cadence'], loc=4)
+    plt.savefig(output_path + 'Sorted_ddf_rosswog_counts_by_cadence.pdf', bbox_inches='tight')
+    plt.close(fig)
+
+
+    fig = plt.figure()
+    plt.errorbar(rw_sorted_cadences_wfd, rw_sorted_cadence_numbers_wfd, yerr=np.sqrt(rw_sorted_cadence_numbers_wfd), fmt='o', capsize=6)
+    plt.errorbar(rw_sorted_cadences_ddf, rw_sorted_cadence_numbers_ddf, yerr=np.sqrt(rw_sorted_cadence_numbers_ddf), fmt='o', capsize=6)
+    plt.axhline(fiducial_scolnic_ddf, color='r')
+    plt.axhline(fiducial_scolnic_wfd, color='r')
+    plt.xticks(rotation='vertical')
+    plt.title('Detections vs. Cadence (Rosswog model)')
+    plt.ylabel('Number of Detections')
+    plt.legend(['DDF Value from Scolnic et. al 2017', 'WFD Value from Scolnic et. al 2017', 'WFD', 'DDF'], loc=4)
+    plt.savefig(output_path + 'split_rosswog_counts_by_cadence.pdf', bbox_inches='tight')
+    plt.close(fig)
+
+
+    fig = plt.figure()
+    plt.errorbar(sc_sorted_cadences_wfd, sc_sorted_cadence_numbers_wfd, yerr=np.sqrt(sc_sorted_cadence_numbers_wfd), fmt='o', capsize=6)
+    plt.errorbar(sc_sorted_cadences_ddf, sc_sorted_cadence_numbers_ddf, yerr=np.sqrt(sc_sorted_cadence_numbers_ddf), fmt='o', capsize=6)
+    plt.axhline(fiducial_scolnic_ddf, color='r')
+    plt.axhline(fiducial_scolnic_wfd, color='r')
+    plt.xticks(rotation='vertical')
+    plt.title('Detections vs. Cadence (DES-GW model)')
+    plt.ylabel('Number of Detections')
+    plt.legend(['DDF Value from Scolnic et. al 2017', 'WFD Value from Scolnic et. al 2017', 'WFD', 'DDF'], loc=4)
+    plt.savefig(output_path + 'split_desgw_counts_by_cadence.pdf', bbox_inches='tight')
+    plt.close(fig)
 
     return
 
 
-if __name__ == "__main__":
-    comm = MPI.COMM_WORLD
-    size = comm.Get_size()
-    rank = comm.Get_rank()
-    sim_results_path = []
-
-    # output_path = '/Users/cnsetzer/Documents/LSST/cadence_analysis/whitepaper_writeup/figures/'
-    # prop_path = '/Users/cnsetzer/Documents/LSST/cadence_analysis/cadence_analysis/cadence_data/'
-    # sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/rosswog_results/binomial_runs/')
-    # sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/scolnic_results/')
-    # #
-    output_path = '/home/csetzer/LSST/whitepaper/figures/'
-    prop_path = '/home/csetzer/software/cadence_analysis/cadence_data/'
-    sim_results_path.append('/share/data1/csetzer/lsst_kne_sims_outputs/')
-
-    if rank == 0:
-        print('The number of MPI processes is: {}'.format(size))
-    # Get the properties for the different cadence partitions
-    ddf_props = pd.read_csv(prop_path + 'ddf_properties.csv', index_col=0)
-    wfd_props = pd.read_csv(prop_path + 'wfd_properties.csv', index_col=0)
-    cadence_props = pd.read_csv(prop_path + 'cadence_information.csv', index_col=0, sep=';')
-    wfd_props = wfd_props.join(cadence_props)
-    wfd_props.dropna(inplace=True)
-
-    results = get_cadence_results(sim_results_path)
-    print('Done importing the cadence results.')
-    results = determine_ddf_detections(ddf_props, results)
-    print('Done determining the detections in DDF.')
-    results = process_counts(results)
-    print('Done getting counts.')
-    results_df = plotting_dataframe(results, wfd_props, ddf_props)
-    print('Done constructing dataframe for plotting.')
-    results_df.dropna(inplace=True)
-
-
-    #plot_trends(results_df, output_path)
-    #plot_trends_2D(results_df, output_path)
-    # simple_sorted_cadence_plots(results, output_path)
-    # print('Done with basic plots.')
-
-    # scolnic_max = results_df['total_scolnic'].astype(np.float64).idxmax()
-    # rosswog_max = results_df['total_ross'].astype(np.float64).idxmax()
-    # scolnic_max_param_df = param_subset(results[scolnic_max]['scolnic']['data']['parameters'], results[scolnic_max]['scolnic']['subset_detections']['ddf']['scolnic'])
-    # ross_max_param_df = param_subset(results[rosswog_max]['rosswog']['data']['parameters'], results[rosswog_max]['rosswog']['subset_detections']['ddf']['scolnic'])
-    #
-    # scolnic_max_nz = redshift_distribution(scolnic_max_param_df)
-    # scolnic_max_nz.savefig(output_path + 'scolnic_nz_max_{}.pdf'.format(scolnic_max),bbox_inches='tight')
-    # plt.close(scolnic_max_nz)
-    # rosswog_max_nz = redshift_distribution(ross_max_param_df)
-    # rosswog_max_nz.savefig(output_path + 'rosswog_nz_max_{}.pdf'.format(rosswog_max),bbox_inches='tight')
-    # plt.close(rosswog_max_nz)
-    #
-    # scolnic_min = results_df['total_scolnic'].astype(np.float64).idxmin()
-    # rosswog_min = results_df['total_ross'].astype(np.float64).idxmin()
-    # scolnic_min_param_df = param_subset(results[scolnic_min]['scolnic']['data']['parameters'], results[scolnic_min]['scolnic']['subset_detections']['ddf']['scolnic'])
-    # ross_min_param_df = param_subset(results[rosswog_min]['rosswog']['data']['parameters'], results[rosswog_min]['rosswog']['subset_detections']['ddf']['scolnic'])
-    #
-    # scolnic_min_nz = redshift_distribution(scolnic_min_param_df)
-    # scolnic_min_nz.savefig(output_path + 'scolnic_nz_min_{}.pdf'.format(scolnic_min),bbox_inches='tight')
-    # plt.close(scolnic_min_nz)
-    # rosswog_min_nz = redshift_distribution(ross_min_param_df)
-    # # rosswog_min_nz.savefig(output_path + 'rosswog_nz_min_{}.pdf'.format(rosswog_min),bbox_inches='tight')
-    # # plt.close(rosswog_min_nz)
-    # #
-    # scolnic_base = 'kraken_2026'
-    # rosswog_base = 'kraken_2026'
-    # scolnic_base_param_df = param_subset(results[scolnic_base]['scolnic']['data']['parameters'], results[scolnic_base]['scolnic']['subset_detections']['ddf']['scolnic'])
-    # ross_base_param_df = param_subset(results[rosswog_base]['rosswog']['data']['parameters'], results[rosswog_base]['rosswog']['subset_detections']['ddf']['scolnic'])
-    # #
-    # # scolnic_base_nz = redshift_distribution(scolnic_base_param_df)
-    # # scolnic_base_nz.savefig(output_path + 'scolnic_nz_base_{}.pdf'.format(scolnic_base),bbox_inches='tight')
-    # # plt.close(scolnic_base_nz)
-    # # rosswog_base_nz = redshift_distribution(ross_base_param_df)
-    # # rosswog_base_nz.savefig(output_path + 'rosswog_nz_base_{}.pdf'.format(rosswog_base),bbox_inches='tight')
-    # # plt.close(rosswog_base_nz)
-    #
-    # scolnic_base_nz = overlay_redshift_distribution(scolnic_base_param_df, ross_base_param_df)
-    # scolnic_base_nz.savefig(output_path + 'both_nz_base_{}.pdf'.format(scolnic_base),bbox_inches='tight')
-    # plt.close(scolnic_base_nz)
-    #
-    # print('Done with redshift distribution plots.')
-
-
-    df1 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
-    df2 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
-    df3 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
-    df4 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
-
-    for cadence in results.keys():
-        if rank == 0:
-            print(cadence)
-        for model in results[cadence].keys():
-            other_obs = results[cadence][model]['data']['other_observations']
-            params = results[cadence][model]['data']['parameters']
-            detections1 = results[cadence][model]['data']['scolnic_detections']
-            detections2 = results[cadence][model]['data']['scolnic_detections_no_coadd']
-            detections3 = results[cadence][model]['data']['scolnic_like_detections']
-            detections4 = results[cadence][model]['data']['scolnic_like_detections_no_coadd']
-
-            num_detected1 = len(detections1['transient_id'].unique())
-            num_detected2 = len(detections2['transient_id'].unique())
-            num_detected3 = len(detections3['transient_id'].unique())
-            num_detected4 = len(detections4['transient_id'].unique())
-
-            if rank == 0:
-                id_list1 = detections1['transient_id'].unique().astype('i')
-                id_list2 = detections2['transient_id'].unique().astype('i')
-                id_list3 = detections3['transient_id'].unique().astype('i')
-                id_list4 = detections4['transient_id'].unique().astype('i')
-            else:
-                id_list1 = None
-                id_list2 = None
-                id_list3 = None
-                id_list4 = None
-
-            num_trans_pprocess1 = int(np.ceil(num_detected1/size))
-            num_trans_pprocess2 = int(np.ceil(num_detected2/size))
-            num_trans_pprocess3 = int(np.ceil(num_detected3/size))
-            num_trans_pprocess4 = int(np.ceil(num_detected4/size))
-
-            receive_array1 = np.empty(num_trans_pprocess1, dtype='i')
-            receive_array2 = np.empty(num_trans_pprocess2, dtype='i')
-            receive_array3 = np.empty(num_trans_pprocess3, dtype='i')
-            receive_array4 = np.empty(num_trans_pprocess4, dtype='i')
-
-            comm.barrier()
-            comm.Scatter([id_list1, num_trans_pprocess1, MPI.INT],
-                     [receive_array1, num_trans_pprocess1, MPI.INT], root=0)
-            comm.Scatter([id_list2, num_trans_pprocess2, MPI.INT],
-                     [receive_array2, num_trans_pprocess2, MPI.INT], root=0)
-            comm.Scatter([id_list3, num_trans_pprocess3, MPI.INT],
-                     [receive_array3, num_trans_pprocess3, MPI.INT], root=0)
-            comm.Scatter([id_list4, num_trans_pprocess4, MPI.INT],
-                     [receive_array4, num_trans_pprocess4, MPI.INT], root=0)
-
-            # Trim the nonsense from the process arrays
-            id_del1 = []
-            for i in range(num_trans_pprocess1):
-                if any(abs(receive_array1[i]) < 1e-250):
-                    id_del1.append(i)
-            receive_array1 = np.delete(receive_array1, id_del1, 0)
-
-            id_del2 = []
-            for i in range(num_trans_pprocess2):
-                if any(abs(receive_array2[i]) < 1e-250):
-                    id_del2.append(i)
-            receive_array2 = np.delete(receive_array2, id_del2, 0)
-
-            id_del3 = []
-            for i in range(num_trans_pprocess3):
-                if any(abs(receive_array3[i]) < 1e-250):
-                    id_del3.append(i)
-            receive_array3 = np.delete(receive_array3, id_del3, 0)
-
-            id_del4 = []
-            for i in range(num_trans_pprocess4):
-                if any(abs(receive_array4[i]) < 1e-250):
-                    id_del4.append(i)
-            receive_array4 = np.delete(receive_array4, id_del4, 0)
-
-
-            id_list_pprocess1 = receive_array1.tolist()
-            id_list_pprocess2 = receive_array2.tolist()
-            id_list_pprocess3 = receive_array3.tolist()
-            id_list_pprocess4 = receive_array4.tolist()
-
-            detections_pp_1 = detections1[detections1['transient_id'].isin(id_list_pprocess1)]
-            detections_pp_2 = detections2[detections2['transient_id'].isin(id_list_pprocess2)]
-            detections_pp_3 = detections3[detections3['transient_id'].isin(id_list_pprocess3)]
-            detections_pp_4 = detections4[detections4['transient_id'].isin(id_list_pprocess4)]
-
-            num_pp1 = len(detections_pp_1['transient_id'].unique())
-            num_pp2 = len(detections_pp_2['transient_id'].unique())
-            num_pp3 = len(detections_pp_3['transient_id'].unique())
-            num_pp4 = len(detections_pp_4['transient_id'].unique())
-
-            df_pp1 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_1, num_pp1, like=False)
-            df_pp2 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_2, num_pp2, like=False)
-            df_pp3 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_3, num_pp3, like=True)
-            df_pp4 = new_band_delta_N(cadence, model, params, other_obs, detections_pp_4, num_pp4, like=True)
-
-            if size > 1:
-                df1_receive = comm.allgather(df_pp1)
-                df2_receive = comm.allgather(df_pp2)
-                df3_receive = comm.allgather(df_pp3)
-                df4_receive = comm.allgather(df_pp4)
-
-                for i in range(size):
-                    df1 = df1.add(df1_receive[i], fill_value=0.0)
-                    df2 = df2.add(df2_receive[i], fill_value=0.0)
-                    df3 = df3.add(df3_receive[i], fill_value=0.0)
-                    df4 = df4.add(df4_receive[i], fill_value=0.0)
-
-    if rank == 0:
-        df1.to_csv(output_path + 'band_delta_N_scolnic_coadd.csv')
-        df2.to_csv(output_path + 'band_delta_N_scolnic_no_coadd.csv')
-        df3.to_csv(output_path + 'band_delta_N_scolnic_like_coadd.csv')
-        df4.to_csv(output_path + 'band_delta_N_scolnic_like_no_coadd.csv')
-        # plot_delta_n(plot_df)
-        print('Finish delta N calculations.')
+def hist_params(df, col, nbins):
+    fig = plt.fig()
+    plt.hist(df[col], bins=nbins)
+    plt.xlabel('{}'.format(col))
+    plt.ylabel('Counts')
+    return fig
