@@ -18,7 +18,7 @@ for survey in survey_dir:
         cadence = oss.OpSimOutput.fromOpSimDB(survey_path + survey, subset='ddf',
                                                    opsimversion='lsstv3').summary
         field_key = 'fieldID'
-    elif re.serach('alt_sched', survey) is not None:
+    elif re.search('alt_sched', survey) is not None:
         cadence = oss.OpSimOutput.fromOpSimDB(survey_path + survey, subset='ddf',
                                                    opsimversion='sstf', ).summary
         field_key = 'fieldRA'
