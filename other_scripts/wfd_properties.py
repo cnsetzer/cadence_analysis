@@ -23,7 +23,7 @@ for survey in survey_dir:
         field_key = 'fieldID'
     elif re.search('alt_sched', survey) is not None:
         cadence = oss.OpSimOutput.fromOpSimDB(survey_path + survey, subset='wfd',
-                                                   opsimversion='sstf', ).summary
+                                                   opsimversion='sstf', filterNull=True).summary
         field_key = 'fieldRA'
     else:
         cadence = oss.OpSimOutput.fromOpSimDB(survey_path + survey, subset='wfd',
