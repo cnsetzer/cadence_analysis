@@ -2,6 +2,7 @@ import os
 import re
 import numpy as np
 import pandas as pd
+from copy import deepcopy
 import matplotlib
 import matplotlib.pyplot as plt
 from astrotog.functions import scolnic_detections as scd
@@ -11,7 +12,7 @@ import seaborn as sns
 
 def determine_ddf_detections(ddf_properties, cadence_results):
     field_rad = np.deg2rad(3.5/2.0)
-    for cadence in list(ddf_properties.index):
+    for cadence in cadence_results.keys():
         for model_key in cadence_results[cadence].keys():
             detections1 = cadence_results[cadence][model_key]['data']['scolnic_detections']
             detections2 = cadence_results[cadence][model_key]['data']['scolnic_like_detections']
@@ -183,11 +184,13 @@ def get_cadence_results(results_paths):
                 model = name_split[1]
                 if re.search('alt_sched', directory) is not None:
                     if re.search('rolling', directory) is not None:
-                        name = name_split[2] + name_split[3] + name_split[4]
+                        name = name_split[2] + '_' + name_split[3] + '_' + name_split[4]
                     else:
-                        name = name_split[2] + name_split[3]
+                        name = name_split[2] + '_' + name_split[3]
                 elif re.search('baseline',name_split[2]) is not None:
                     name = name_split[2]
+                elif re.search('astro',directory) is not None:
+                    name = 'astro-lsst-01_2039'
                 else:
                     name_split2 = re.split("(\d+)", name_split[2])
                     name = name_split2[0] + '_' + name_split2[1]
