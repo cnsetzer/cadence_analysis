@@ -181,11 +181,17 @@ def get_cadence_results(results_paths):
             else:
                 name_split = re.split('_',directory)
                 model = name_split[1]
-                if re.search('baseline',name_split[2]) is None:
+                if re.search('alt_sched', directory) is not None:
+                    if re.search('rolling', directory) is not None:
+                        name = name_split[2] + name_split[3] + name_split[4]
+                    else:
+                        name = name_split[2] + name_split[3]
+                elif re.search('baseline',name_split[2]) is not None:
+                    name = name_split[2]
+                else:
                     name_split2 = re.split("(\d+)", name_split[2])
                     name = name_split2[0] + '_' + name_split2[1]
-                else:
-                    name = name_split[2]
+
                 if re.search('minion',name) is not None:
                     name += '_desc_dithered_v4'
                 for string in name_split:
@@ -620,7 +626,7 @@ def simple_sorted_cadence_plots(results, output_path):
 
 
 def hist_params(df, col, nbins):
-    fig = plt.fig()
+    fig = plt.figure()
     plt.hist(df[col], bins=nbins)
     plt.xlabel('{}'.format(col))
     plt.ylabel('Counts')

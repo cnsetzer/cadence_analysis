@@ -14,16 +14,21 @@ survey_dir = os.listdir(survey_path)
 
 for survey in survey_dir:
     survey_name = survey.strip('.db')
-    if re.search('minion', survey) is None:
-        cadence = oss.OpSimOutput.fromOpSimDB(survey_path + survey, subset='ddf',
-                                                   opsimversion='lsstv4').summary
-        field_key = 'fieldId'
-    else:
+    if re.search('minion', survey) is not None:
         cadence = oss.OpSimOutput.fromOpSimDB(survey_path + survey, subset='ddf',
                                                    opsimversion='lsstv3').summary
         field_key = 'fieldID'
+    elif re.serach('alt_sched', survey) is not None:
+        cadence = oss.OpSimOutput.fromOpSimDB(survey_path + survey, subset='ddf',
+                                                   opsimversion='sstf', ).summary
+        field_key = 'fieldRA'
+    else:
+        cadence = oss.OpSimOutput.fromOpSimDB(survey_path + survey, subset='ddf',
+                                                   opsimversion='lsstv4').summary
+        field_key = 'fieldId'
 
-    if survey_name == 'kraken_2044' or survey_name == 'kraken_2042' or survey_name == 'nexus_2097' or survey_name == 'mothra_2049':
+
+    if survey_name == 'kraken_2044' or survey_name == 'kraken_2042' or survey_name == 'nexus_2097' or survey_name == 'mothra_2049' or survey_name == 'colossus_2683' or survey_name == 'astro-lsst-01_2039':
         field_key = 'fieldRA'
 
     for band in ['u', 'g', 'r', 'i', 'z', 'y']:
