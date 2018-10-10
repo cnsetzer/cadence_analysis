@@ -17,11 +17,11 @@ if __name__ == "__main__":
     rank = comm.Get_rank()
     sim_results_path = []
 
-    output_path = '/home/csetzer/LSST/whitepaper/detect_delta_N/'
-    sim_results_path.append('/share/data1/csetzer/lsst_kne_sims_outputs/')
+    # output_path = '/home/csetzer/LSST/whitepaper/detect_delta_N/'
+    # sim_results_path.append('/share/data1/csetzer/lsst_kne_sims_outputs/')
 
-    # output_path = '/Users/cnsetzer/Documents/LSST/astrotog_output/'
-    # sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/scolnic_results/')
+    output_path = '/Users/cnsetzer/Documents/LSST/astrotog_output/'
+    sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/scolnic_results/')
 
     df1 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
     df2 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
@@ -70,10 +70,10 @@ if __name__ == "__main__":
             num_detected4 = len(detections4['transient_id'].unique())
 
             if rank == 0:
-                id_list1 = np.asarray(detections1['transient_id'].unique(), dtype='i8')
-                id_list2 = np.asarray(detections2['transient_id'].unique(), dtype='i8')
-                id_list3 = np.asarray(detections3['transient_id'].unique(), dtype='i8')
-                id_list4 = np.asarray(detections4['transient_id'].unique(), dtype='i8')
+                id_list1 = np.asarray(detections1['transient_id'].unique(), dtype='i4')
+                id_list2 = np.asarray(detections2['transient_id'].unique(), dtype='i4')
+                id_list3 = np.asarray(detections3['transient_id'].unique(), dtype='i4')
+                id_list4 = np.asarray(detections4['transient_id'].unique(), dtype='i4')
             else:
                 id_list1 = None
                 id_list2 = None
@@ -85,24 +85,24 @@ if __name__ == "__main__":
             num_trans_pprocess3 = int(np.ceil(num_detected3/size))
             num_trans_pprocess4 = int(np.ceil(num_detected4/size))
 
-            receive_array1 = np.zeros(num_trans_pprocess1, dtype='i8')
-            receive_array2 = np.zeros(num_trans_pprocess2, dtype='i8')
-            receive_array3 = np.zeros(num_trans_pprocess3, dtype='i8')
-            receive_array4 = np.zeros(num_trans_pprocess4, dtype='i8')
+            receive_array1 = np.zeros(num_trans_pprocess1, dtype='i4')
+            receive_array2 = np.zeros(num_trans_pprocess2, dtype='i4')
+            receive_array3 = np.zeros(num_trans_pprocess3, dtype='i4')
+            receive_array4 = np.zeros(num_trans_pprocess4, dtype='i4')
 
             comm.barrier()
             print('Debug 1')
-            comm.Scatter([id_list1, num_trans_pprocess1, MPI.LONG_DOUBLE_INT],
-                     [receive_array1, num_trans_pprocess1, MPI.LONG_DOUBLE_INT], root=0)
+            comm.Scatter([id_list1, num_trans_pprocess1, MPI.INT],
+                     [receive_array1, num_trans_pprocess1, MPI.INT], root=0)
             print('Debug 2')
-            comm.Scatter([id_list2, num_trans_pprocess2, MPI.LONG_DOUBLE_INT],
-                     [receive_array2, num_trans_pprocess2, MPI.LONG_DOUBLE_INT], root=0)
+            comm.Scatter([id_list2, num_trans_pprocess2, MPI.INT],
+                     [receive_array2, num_trans_pprocess2, MPI.INT], root=0)
             print('Debug 3')
-            comm.Scatter([id_list3, num_trans_pprocess3, MPI.LONG_DOUBLE_INT],
-                     [receive_array3, num_trans_pprocess3, MPI.LONG_DOUBLE_INT], root=0)
+            comm.Scatter([id_list3, num_trans_pprocess3, MPI.INT],
+                     [receive_array3, num_trans_pprocess3, MPI.INT], root=0)
             print('Debug 4')
-            comm.Scatter([id_list4, num_trans_pprocess4, MPI.LONG_DOUBLE_INT],
-                     [receive_array4, num_trans_pprocess4, MPI.LONG_DOUBLE_INT], root=0)
+            comm.Scatter([id_list4, num_trans_pprocess4, MPI.INT],
+                     [receive_array4, num_trans_pprocess4, MPI.INT], root=0)
             print('Debug 5')
             # Trim the nonsense from the process arrays
             id_del1 = []
