@@ -17,11 +17,11 @@ if __name__ == "__main__":
     rank = comm.Get_rank()
     sim_results_path = []
 
-    # output_path = '/home/csetzer/LSST/whitepaper/detect_delta_N/'
-    # sim_results_path.append('/share/data1/csetzer/lsst_kne_sims_outputs/')
+    output_path = '/home/csetzer/LSST/whitepaper/detect_delta_N/'
+    sim_results_path.append('/share/data1/csetzer/lsst_kne_sims_outputs/')
 
-    output_path = '/Users/cnsetzer/Documents/LSST/astrotog_output/'
-    sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/scolnic_results/')
+    # output_path = '/Users/cnsetzer/Documents/LSST/astrotog_output/'
+    # sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/scolnic_results/')
 
     df1 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
     df2 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
