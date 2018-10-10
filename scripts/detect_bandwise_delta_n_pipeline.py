@@ -17,11 +17,11 @@ if __name__ == "__main__":
     rank = comm.Get_rank()
     sim_results_path = []
 
-    # output_path = '/home/csetzer/LSST/whitepaper/detect_delta_N/'
-    # sim_results_path.append('/share/data1/csetzer/lsst_kne_sims_outputs/')
+    output_path = '/home/csetzer/LSST/whitepaper/detect_delta_N/'
+    sim_results_path.append('/share/data1/csetzer/lsst_kne_sims_outputs/')
 
-    output_path = '/Users/cnsetzer/Documents/LSST/astrotog_output/'
-    sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/scolnic_results/')
+    # output_path = '/Users/cnsetzer/Documents/LSST/astrotog_output/'
+    # sim_results_path.append('/Users/cnsetzer/Documents/LSST/astrotog_output/scolnic_results/')
 
     df1 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
     df2 = pd.DataFrame(columns=['delta_N_u_rosswog', 'delta_N_g_rosswog', 'delta_N_r_rosswog', 'delta_N_i_rosswog', 'delta_N_z_rosswog', 'delta_N_y_rosswog', 'delta_N_u_scolnic', 'delta_N_g_scolnic', 'delta_N_r_scolnic', 'delta_N_i_scolnic', 'delta_N_z_scolnic', 'delta_N_y_scolnic'])
@@ -91,19 +91,19 @@ if __name__ == "__main__":
             receive_array4 = np.zeros(num_trans_pprocess4, dtype='i4')
 
             comm.barrier()
-            print('Debug 1')
+
             comm.Scatter([id_list1, num_trans_pprocess1, MPI.INT],
                      [receive_array1, num_trans_pprocess1, MPI.INT], root=0)
-            print('Debug 2')
+
             comm.Scatter([id_list2, num_trans_pprocess2, MPI.INT],
                      [receive_array2, num_trans_pprocess2, MPI.INT], root=0)
-            print('Debug 3')
+
             comm.Scatter([id_list3, num_trans_pprocess3, MPI.INT],
                      [receive_array3, num_trans_pprocess3, MPI.INT], root=0)
-            print('Debug 4')
+
             comm.Scatter([id_list4, num_trans_pprocess4, MPI.INT],
                      [receive_array4, num_trans_pprocess4, MPI.INT], root=0)
-            print('Debug 5')
+
             # Trim the nonsense from the process arrays
             id_del1 = []
             for i in range(num_trans_pprocess1):
@@ -129,8 +129,6 @@ if __name__ == "__main__":
                     id_del4.append(i)
             receive_array4 = np.delete(receive_array4, id_del4, 0)
 
-            print('Debug 6')
-
             id_list_pprocess1 = receive_array1.tolist()
             id_list_pprocess2 = receive_array2.tolist()
             id_list_pprocess3 = receive_array3.tolist()
@@ -145,8 +143,6 @@ if __name__ == "__main__":
             detections_pp_2 = detections2[detections2['transient_id'].isin(id_list_pprocess2)]
             detections_pp_3 = detections3[detections3['transient_id'].isin(id_list_pprocess3)]
             detections_pp_4 = detections4[detections4['transient_id'].isin(id_list_pprocess4)]
-
-            print('Debug 7')
 
             detections1 = None
             detections2 = None
