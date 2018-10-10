@@ -215,6 +215,45 @@ def get_cadence_results(results_paths):
                 results[name][model]['data']['scolnic_like_detections_no_coadd'] = pd.read_csv(path + directory +'/scolnic_like_detections_no_coadd.csv',index_col=0)
     return results
 
+
+def get_single_cadence_results(path, directory):
+    results = {}
+    name_split = re.split('_', directory)
+    model = name_split[1]
+    if re.search('alt_sched', directory) is not None:
+        if re.search('rolling', directory) is not None:
+            name = name_split[2] + '_' + name_split[3] + '_' + name_split[4]
+        else:
+            name = name_split[2] + '_' + name_split[3]
+    elif re.search('baseline',name_split[2]) is not None:
+        name = name_split[2]
+    elif re.search('astro',directory) is not None:
+        name = 'astro-lsst-01_2039'
+    else:
+        name_split2 = re.split("(\d+)", name_split[2])
+        name = name_split2[0] + '_' + name_split2[1]
+
+    if re.search('minion',name) is not None:
+        name += '_desc_dithered_v4'
+    for string in name_split:
+        if re.search('var', string) is not None:
+            name += string
+    if name not in results.keys():
+        results[name] = {}
+
+    results[name][model] = {}
+    results[name][model]['data'] = {}
+    #results[name][model]['data']['observations'] = pd.read_csv(path + directory +'/observations.csv',index_col=0)
+    results[name][model]['data']['parameters'] = pd.read_csv(path + directory +'/modified_parameters.csv',index_col=0)
+    #results[name][model]['data']['coadded_observations'] = pd.read_csv(path + directory +'/coadded_observations.csv',index_col=0)
+    results[name][model]['data']['other_observations'] = pd.read_csv(path + directory +'/other_observations.csv',index_col=0)
+    results[name][model]['data']['scolnic_detections'] = pd.read_csv(path + directory +'/scolnic_detections.csv',index_col=0)
+    results[name][model]['data']['scolnic_detections_no_coadd'] = pd.read_csv(path + directory +'/scolnic_detections_no_coadd.csv',index_col=0)
+    results[name][model]['data']['scolnic_like_detections'] = pd.read_csv(path + directory +'/scolnic_like_detections.csv',index_col=0)
+    results[name][model]['data']['scolnic_like_detections_no_coadd'] = pd.read_csv(path + directory +'/scolnic_like_detections_no_coadd.csv',index_col=0)
+    return results
+
+
 def param_subset(param_df, ddf_subset):
     subset_df = pd.DataFrame(index=param_df.index, columns=['subset'])
     in_ddf = list(ddf_subset['transient_id'].unique())
