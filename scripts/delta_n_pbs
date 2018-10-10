@@ -10,7 +10,7 @@ module purge
 module load python
 module load mpi/mvapich/2-2.3b
 source activate astrotog_hpc
-cd /home/csetzer/software/cadence_analysis/software
+cd /home/csetzer/software/cadence_analysis/scripts/
 
 echo $PBS_O_WORKDIR
 echo Running on host `hostname`
