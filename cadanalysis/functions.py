@@ -422,7 +422,7 @@ def new_band_delta_N(cadence, model, params_df, other_obs_df, detections_df, num
             new_N = len(scld(params_df, detect_bandless, other_obs_df)['transient_id'].unique())
         else:
             new_N = len(scd(params_df, detect_bandless, other_obs_df)['transient_id'].unique())
-        results_df.at[str(cadence), 'delta_N_{}'] = new_N - results_df.at[cadence, 'total_ross_scolnic']
+        results_df.at[str(cadence), 'delta_N_{}'] = new_N - len(detections_df['transient_id'].unique())
     return results_df
 
 ################################################################################
