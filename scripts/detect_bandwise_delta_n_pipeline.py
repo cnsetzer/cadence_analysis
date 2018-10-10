@@ -158,12 +158,7 @@ if __name__ == "__main__":
             num_pp3 = len(detections_pp_3['transient_id'].unique())
             num_pp4 = len(detections_pp_4['transient_id'].unique())
 
-            if rank == 0:
-                print('Starting detections for {}.'.format(model))
-
             df_pp1 = ca.new_band_delta_N(cadence, model, params, other_obs, detections_pp_1, num_pp1, like=False)
-            if rank == 0:
-                print('First detections done for {}.'.format(model))
             df_pp2 = ca.new_band_delta_N(cadence, model, params, other_obs, detections_pp_2, num_pp2, like=False)
             df_pp3 = ca.new_band_delta_N(cadence, model, params, other_obs, detections_pp_3, num_pp3, like=True)
             df_pp4 = ca.new_band_delta_N(cadence, model, params, other_obs, detections_pp_4, num_pp4, like=True)
@@ -202,5 +197,5 @@ if __name__ == "__main__":
         df3.to_csv(output_path + 'band_delta_N_scolnic_like_coadd.csv')
         df4.to_csv(output_path + 'band_delta_N_scolnic_like_no_coadd.csv')
         # plot_delta_n(plot_df)
-        print('Finish delta N calculations.')
+        print('Finished delta N calculations.')
         print('The recalculation of detections for all bands took {} seconds.'.format(datetime.timedelta(seconds=time.time()-t0)))
